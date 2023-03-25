@@ -15,28 +15,13 @@ namespace CICDNotas.Services.EstudiantesR
 
     public IEnumerable<Estudiante> GetMostrarEstudiantes()
     {
-     var datos = _context.EjecutarSelectMySQL("","","");
+     var datos = _context.EjecutarSelectMySQL("","","","","","","");
 
       foreach (DataRow dr in datos.Tables["EjecucionSelect"].Rows)
       {
-        var t  = dr.ItemArray[1];
-        
-
+        var t  = dr.ItemArray[1];   
       }
-
         return (IEnumerable<Estudiante>)datos;
     }
-
-    //public async Task Save(Estudiante estudiante)
-    //{
-    //  //_context.Add(estudiante);
-    //  //await _context.SaveChangesAsync();
-    //}
-    ////public Estudiante GetFindEstudiante(int Id)
-    ////{
-    ////  var estudianteActual = _context.Estudiantes.Find(Id);
-
-    ////  return estudianteActual;
-    ////}
   }
 }

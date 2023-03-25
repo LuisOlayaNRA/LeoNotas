@@ -1,4 +1,5 @@
-﻿using CICDNotas.Models;
+﻿using System.Data;
+using CICDNotas.Models;
 using Microsoft.AspNetCore.Mvc;
 using RegistroNotas.Services.NotaR;
 
@@ -8,19 +9,26 @@ namespace CICDNotas.Controllers
   [Route("[controller]")]
   public class NotaController : ControllerBase
   {
-    readonly INotaService notaService;
+    public NotaController() { }
 
-    //public NotaController(INotaService notaService)
-    //{
-    //  this.notaService = notaService;
-    //}
+    EafitContext _context = new EafitContext();
+    DataSet conjuntoDatosResultado;
+    Dictionary<string, List<string>> datosProcesadosLista = new Dictionary<string, List<string>>();
 
-    //[HttpGet]
-    //[Route("Listar")]
-    //public IActionResult GetListarNotas()
-    //{
-    //  return Ok(notaService.GetMostrarNota());
-    //}
+    [HttpGet]
+    [Route("Listar")]
+    public string GetListarNotas()
+    {
+      string variable = "";
+      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Nota", "Listar", "", "", "", "", "");
+      datosProcesadosLista = _context.obtenerDatos(conjuntoDatosResultado);
+
+      for (int i = 0; i < datosProcesadosLista["Id"].Count; i++)
+      {
+        variable += "\n Id - " + datosProcesadosLista["Id"][i] + " Nombre: " + datosProcesadosLista["Nombre"][i];
+      }
+      return variable;
+    }
 
     //[HttpPost]
     //[Route("Registrar")]
@@ -30,18 +38,29 @@ namespace CICDNotas.Controllers
     //  return Ok();
     //}
 
-    //[HttpGet]
-    //[Route("TodasLasNotas/{Id_Materia}/{Id_Estudiante}")]
-    //public IActionResult GetBuscarNotas(int Id_Materia, int Id_Estudiante)
-    //{
-    //  return Ok(notaService.TodasLasNotas(Id_Estudiante, Id_Materia));
-    //}
+    [HttpGet]
+    [Route("TodasLasNotas/{Id_Materia}/{Id_Estudiante}")]
+    public IActionResult GetBuscarNotas(int Id_Materia, int Id_Estudiante)
+    {
+      string variable = "";
+      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Nota", "Buscar", Id_Materia.ToString(), Id_Estudiante.ToString(), "", "", "");
+      datosProcesadosLista = _context.obtenerDatos(conjuntoDatosResultado);
 
-    //[HttpGet]
-    //[Route("CalcularNota/{Id_Materia}/{Id_Estudiante}")]
-    //public IActionResult GetCalcularNota(int Id_Materia, int Id_Estudiante)
-    //{
-    //  return Ok(notaService.CalcularNota(Id_Estudiante, Id_Materia));
-    //}
+      for (int i = 0; i < datosProcesadosLista["Value"].Count; i++)
+      {
+        variable += "\n Value: " + datosProcesadosLista["Value"][i] + " Porcentaje: " + datosProcesadosLista["Porcentaje"][i] + " Actividad: " + datosProcesadosLista["Actividad"][i];
+      }
+      return Ok($"Nota son: {variable}");
+    }
+
+    [HttpGet]
+    [Route("CalcularNota/{Id_Materia}/{Id_Estudiante}")]
+    public IActionResult GetCalcularNota(int Id_Materia, int Id_Estudiante)
+    {
+      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Nota", "Buscar", Id_Materia.ToString(), Id_Estudiante.ToString(), "", "", "");
+      datosProcesadosLista = _context.obtenerDatos(conjuntoDatosResultado);
+
+      return Ok("Materia Encontrada: ");
+    }
   }
 }

@@ -11,7 +11,7 @@ namespace CICDNotas
     public DbSet<Materia> Materias { get; set; }
     public DbSet<Nota> Notas { get; set; }
 
-    public DataSet EjecutarSelectMySQL(string controlador, string tipo, string parametro)
+    public DataSet EjecutarSelectMySQL(string controlador, string tipo, string parametro1, string parametro2,  string parametro3, string parametro4,string parametro5)
     {
       string sentenciaSQL = "SELECT * FROM EAFIT.Estudiante;";
       switch (controlador)
@@ -24,17 +24,39 @@ namespace CICDNotas
           else if (tipo == "Buscar")
           {
             sentenciaSQL = "SELECT * FROM EAFIT.Estudiante WHERE Id_Estudiante = {0};";
-            sentenciaSQL = string.Format(sentenciaSQL, parametro);
+            sentenciaSQL = string.Format(sentenciaSQL, parametro1);
+          }
+          break;
+
+        case "Materia":
+          if (tipo == "Listar")
+          {
+            sentenciaSQL = "SELECT * FROM EAFIT.Materia;";
+          }
+          else if (tipo == "Buscar")
+          {
+            sentenciaSQL = "SELECT * FROM EAFIT.Materia WHERE Id_Materia = {0};";
+            sentenciaSQL = string.Format(sentenciaSQL, parametro1);
+          }
+          break;
+
+        case "Nota":
+          if (tipo == "Listar")
+          {
+            sentenciaSQL = "SELECT * FROM EAFIT.Nota;";
+          }
+          else if (tipo == "Buscar")
+          {
+            sentenciaSQL = "SELECT * FROM EAFIT.Nota WHERE Id_Materia = {0} AND Id_Estudiante = {1};";
+            sentenciaSQL = string.Format(sentenciaSQL, parametro1, parametro2);
           }
           break;
       }
       
       string conexionProcesos = "Data Source=databaseproyectosuniversidad.ckifuzsq7wye.us-east-1.rds.amazonaws.com;Initial Catalog=EAFIT;User Id=admin;Password=Canito2706.*;";
-
       using (var conn = new MySqlConnection(conexionProcesos))
       {
         var conjuntoDatosSelect = new DataSet();
-
         try
         {
           conn.Open();
@@ -48,9 +70,31 @@ namespace CICDNotas
         {
           Console.WriteLine(ex.Message);
         }
-
         return conjuntoDatosSelect;
       }
+    }
+
+    public Dictionary<string, List<string>> obtenerDatos(DataSet conjuntoDatosResultado)
+    {
+      Dictionary<string, List<string>> datosProcesadosLista = new Dictionary<string, List<string>>();
+
+      int iteracionColumna = 0;
+      foreach (DataRow dr in conjuntoDatosResultado.Tables["EjecucionSelect"].Rows)
+      {
+        foreach (var item in dr.ItemArray)
+        {
+          string key = dr.Table.Columns[iteracionColumna].ToString().Replace("@", "").Split('_')[0].Trim();
+
+          if (!datosProcesadosLista.ContainsKey(key))
+          {
+            datosProcesadosLista.Add(key, new List<string>());
+          }
+          datosProcesadosLista[key].Add(item.ToString());
+          iteracionColumna++;
+          if (dr.Table.Columns.Count == iteracionColumna) iteracionColumna = 0;
+        }
+      }
+      return datosProcesadosLista;
     }
   }
 }
