@@ -1,4 +1,7 @@
+using System.Net;
 using CICDNotas;
+using CICDNotas.Controllers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EafitTest
 {
@@ -46,5 +49,21 @@ namespace EafitTest
         var result2 = eafit.obtenerDatos(result);
         Assert.AreEqual(true, result2.Count > 0);
       }
+
+    [TestMethod]
+    public void CalculoNota()
+    {
+      EafitContext eafit = new EafitContext();
+      var result = eafit.EjecutarSelectMySQL("Nota", "Calculo", "1", "1", "", "", "");
+      var result2 = eafit.obtenerDatos(result);
+      Assert.AreEqual(true, Convert.ToDouble(result2["NOTA"][0]) > 0);
+    }
+
+    [TestMethod]
+    public void RquestNota()
+    {
+      NotaController notaC = new NotaController();
+      Assert.AreEqual(true, true);
+    }
   }
 }

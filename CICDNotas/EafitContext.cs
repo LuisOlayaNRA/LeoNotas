@@ -60,6 +60,16 @@ namespace CICDNotas
             sentenciaSQL = "SELECT * FROM EAFIT.Nota WHERE Id_Materia = {0} AND Id_Estudiante = {1};";
             sentenciaSQL = string.Format(sentenciaSQL, parametro1, parametro2);
           }
+          else if (tipo == "Insertar")
+          {
+            sentenciaSQL = "INSERT INTO EAFIT.Nota (Id_Nota,Value,Porcentaje,Actividad,Id_Materia,Id_Estudiante) VALUES ({0},{1},{2},'{3}',{4},2);";
+            sentenciaSQL = string.Format(sentenciaSQL, parametro1, parametro2, parametro3, parametro4,parametro5);
+          }
+          else if (tipo == "Calculo")
+          {
+            sentenciaSQL = "SELECT SUM((Value * Porcentaje)/100) AS NOTA FROM EAFIT.Nota WHERE Id_Materia = {0} AND Id_Estudiante = {1};";
+            sentenciaSQL = string.Format(sentenciaSQL, parametro1, parametro2);
+          }
           break;
       }
       
@@ -72,8 +82,7 @@ namespace CICDNotas
           conn.Open();
           using (var adaptadorDatos = new MySqlDataAdapter(sentenciaSQL, conn))
           {
-            adaptadorDatos.Fill(conjuntoDatosSelect, "EjecucionSelect");
-            
+            adaptadorDatos.Fill(conjuntoDatosSelect, "EjecucionSelect");           
           }
         }
         catch (MySqlException ex)
@@ -87,7 +96,6 @@ namespace CICDNotas
     public Dictionary<string, List<string>> obtenerDatos(DataSet conjuntoDatosResultado)
     {
       Dictionary<string, List<string>> datosProcesadosLista = new Dictionary<string, List<string>>();
-
       int iteracionColumna = 0;
       foreach (DataRow dr in conjuntoDatosResultado.Tables["EjecucionSelect"].Rows)
       {

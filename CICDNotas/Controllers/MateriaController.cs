@@ -11,7 +11,6 @@ namespace CICDNotas.Controllers
     public MateriaController()
     {
     }
-
     readonly EafitContext _context = new EafitContext();
     DataSet conjuntoDatosResultado;
     Dictionary<string, List<string>> datosProcesadosLista = new Dictionary<string, List<string>>();
@@ -33,12 +32,11 @@ namespace CICDNotas.Controllers
 
     [HttpGet]
     [Route("Buscar/{Id_Materia}")]
-    public IActionResult GetBuscarMateria(int Id_Estudiante)
+    public IActionResult GetBuscarMateria(int Id_Materia)
     {
-      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Materia", "Buscar", Id_Estudiante.ToString(), "", "", "", "");
+      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Materia", "Buscar", Id_Materia.ToString(), "", "", "", "");
       datosProcesadosLista = _context.obtenerDatos(conjuntoDatosResultado);
-
-      return Ok($"Materia Encontrada: {Id_Estudiante}");
+      return Ok($"Materia Encontrada: {Id_Materia} --> {datosProcesadosLista["Nombre"][0]}");
     }
 
     [HttpPost]
