@@ -1,7 +1,5 @@
 ﻿using System.Data;
 using CICDNotas.Models;
-using CICDNotas.Services.EstudiantesR;
-using CICDNotas.Services.MateriaR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CICDNotas.Controllers
@@ -14,7 +12,7 @@ namespace CICDNotas.Controllers
     {
     }
 
-    EafitContext _context = new EafitContext();
+    readonly EafitContext _context = new EafitContext();
     DataSet conjuntoDatosResultado;
     Dictionary<string, List<string>> datosProcesadosLista = new Dictionary<string, List<string>>();
 
@@ -47,8 +45,8 @@ namespace CICDNotas.Controllers
     [Route("Registrar")]
     public IActionResult PostRegistrarMateria([FromBody] Estudiante estudiante)
     {
-      //estudianteService.Save(estudiante);
-      return Ok();
+      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Materia", "Insertar", estudiante.Id_Estudiante.ToString(), estudiante.Nombre.ToString(), "", "", "");
+      return Ok("Materia Insertada");
     }
   }
 }

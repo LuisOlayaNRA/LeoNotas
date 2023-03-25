@@ -8,7 +8,7 @@ namespace CICDNotas.Controllers
   [Route("[controller]")]
   public class EstudianteController : ControllerBase
   {
-    EafitContext _context = new EafitContext();
+    readonly EafitContext _context = new EafitContext();
     DataSet conjuntoDatosResultado;
     Dictionary<string, List<string>> datosProcesadosLista = new Dictionary<string, List<string>>();
     public EstudianteController()
@@ -25,7 +25,7 @@ namespace CICDNotas.Controllers
 
       for (int i = 0; i < datosProcesadosLista["Id"].Count; i++)
       {
-        variable += "\n Id - " + datosProcesadosLista["Id"][i] + " Nombre: " + datosProcesadosLista["Nombre"][i];
+        variable += $"\n Id - {datosProcesadosLista["Id"][i]} Nombre: {datosProcesadosLista["Nombre"][i]}";
       }
       return variable;
     }
@@ -44,8 +44,8 @@ namespace CICDNotas.Controllers
     [Route("Registrar")]
     public IActionResult PostRegistrarEstudiante([FromBody] Estudiante estudiante)
     {
-      //estudianteService.Save(estudiante);
-      return Ok();
+      conjuntoDatosResultado = _context.EjecutarSelectMySQL("Estudiante", "Insertar", estudiante.Id_Estudiante.ToString(), estudiante.Nombre.ToString(), "", "", "");
+      return Ok("Estudiante Insertado");
     }
   }
 }
