@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using CICDNotas.Models;
-using CICDNotas.Services.EstudiantesR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CICDNotas.Controllers
