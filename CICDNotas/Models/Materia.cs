@@ -10,8 +10,6 @@ namespace CICDNotas.Models
 {
   public class Materia
   {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id_Materia { get; set; }
     public string? Nombre { get; set; }
   }

@@ -1,4 +1,7 @@
 using CICDNotas;
+using CICDNotas.Services.EstudiantesR;
+using CICDNotas.Services.MateriaR;
+using RegistroNotas.Services.NotaR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-EafitContext ea = new EafitContext();
-ea.EjecutarSelectMySQL("","");
+builder.Services.AddScoped<IEstudianteService, EstudianteService>();
+//builder.Services.AddScoped<IMateriaService, MateriaService>();
+//builder.Services.AddScoped<INotaService, NotaService>();
 
 var app = builder.Build();
 

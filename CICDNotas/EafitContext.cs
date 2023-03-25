@@ -7,17 +7,29 @@ namespace CICDNotas
 {
   public class EafitContext
   {
-
-
-
     public DbSet<Estudiante> Estudiantes { get; set; }
     public DbSet<Materia> Materias { get; set; }
     public DbSet<Nota> Notas { get; set; }
 
-    public DataSet EjecutarSelectMySQL(string sentenciaSQL, string conexionProcesos)
+    public DataSet EjecutarSelectMySQL(string controlador, string tipo, string parametro)
     {
-      sentenciaSQL = "SELECT * FROM EAFIT.Estudiante;";
-      conexionProcesos = "Data Source=databaseproyectosuniversidad.ckifuzsq7wye.us-east-1.rds.amazonaws.com;Initial Catalog=EAFIT;User Id=admin;Password=Canito2706.*;";
+      string sentenciaSQL = "SELECT * FROM EAFIT.Estudiante;";
+      switch (controlador)
+      {
+        case "Estudiante":
+          if (tipo == "Listar")
+          {
+            sentenciaSQL = "SELECT * FROM EAFIT.Estudiante;";
+          }
+          else if (tipo == "Buscar")
+          {
+            sentenciaSQL = "SELECT * FROM EAFIT.Estudiante WHERE Id_Estudiante = {0};";
+            sentenciaSQL = string.Format(sentenciaSQL, parametro);
+          }
+          break;
+      }
+      
+      string conexionProcesos = "Data Source=databaseproyectosuniversidad.ckifuzsq7wye.us-east-1.rds.amazonaws.com;Initial Catalog=EAFIT;User Id=admin;Password=Canito2706.*;";
 
       using (var conn = new MySqlConnection(conexionProcesos))
       {
@@ -36,6 +48,7 @@ namespace CICDNotas
         {
           Console.WriteLine(ex.Message);
         }
+
         return conjuntoDatosSelect;
       }
     }
