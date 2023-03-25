@@ -23,7 +23,7 @@ namespace CICDNotas
           }
           else if (tipo == "Buscar")
           {
-            sentenciaSQL = "SELECT * FROM EAFIT.Estudiante WHERE Id_Estudiante = {0};";
+            sentenciaSQL = "SELECT * FROM EAFIT.Estudiante WHERE Id_Estudiante = ;";
             sentenciaSQL = string.Format(sentenciaSQL, parametro1);
           }
           else if (tipo == "Insertar")
