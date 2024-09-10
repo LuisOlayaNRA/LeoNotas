@@ -19,5 +19,7 @@ namespace CICDNotas.Models
     public int Id_Estudiante{ get; set; }
     public virtual ICollection<Estudiante>? Estudiante { get; set; }
 
-  }
+    public string? LaNotaAlta { get; set; }
+
+    }
 }
