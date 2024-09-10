@@ -1,4 +1,6 @@
-﻿namespace CICDNotas.Models;
+﻿using System.Globalization;
+
+namespace CICDNotas.Models;
 
 public class Parcial
 {
@@ -9,6 +11,8 @@ public class Parcial
     public int NotaExtra { get; set; }
     public int EstudianteId { get; set; }
     public Estudiante Estudiante { get; set; }
+
+    public string variable_1 { get; set; }
 
     public string Variable_2 { get; set; }
 }
