@@ -18,6 +18,7 @@ namespace CICDNotas.Models
     public virtual ICollection<Materia>? Materia { get; set; }
     public int Id_Estudiante{ get; set; }
     public virtual ICollection<Estudiante>? Estudiante { get; set; }
+    public string? LaNotaMasBaja { get; set; }
 
     public string? LaNotaAlta { get; set; }
 
