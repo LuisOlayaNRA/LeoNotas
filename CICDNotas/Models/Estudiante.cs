@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CICDNotas.Models
+﻿namespace CICDNotas.Models
 {
-  public class Estudiante
-  {
-    public int Id_Estudiante { get; set; }
-    public string? Nombre { get; set; }
-
-  }
+    public class Estudiante
+    {
+        public int Id_Estudiante { get; set; }
+        public string? Nombre { get; set; }
+        public string? SalonFavorito { get; set; }
+    }
 }
