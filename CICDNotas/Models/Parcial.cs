@@ -18,4 +18,5 @@ public class Parcial
     public string Variable_3 { get; set; }
     public string Variable_4 { get; set; }
     public string Variable_44 { get; set; }
+    public string Variable_5 { get; set; }
 }
